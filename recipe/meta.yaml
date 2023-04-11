@@ -46,7 +46,7 @@ outputs:
          - {{ pin_compatible("cuda-version", max_pin="x.x") }}
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-    # Tests are defined in the top level, due to a conda-build bug with recipe/output name conflicts.
+    # Tests are defined at the top level, due to package/output name conflicts.
     about:
       home: https://developer.nvidia.com/cublas
       license: LicenseRef-NVIDIA-End-User-License-Agreement
