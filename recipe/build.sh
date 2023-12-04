@@ -23,6 +23,10 @@ for i in `ls`; do
             for j in "$i"/*.so*; do
                 # Shared libraries are symlinked in $PREFIX/lib
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
+
+                if [[ $j =~ \.so\. ]]; then
+                    patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                fi
             done
         fi
     else
