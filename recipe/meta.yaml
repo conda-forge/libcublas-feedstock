@@ -23,7 +23,7 @@ source:
   sha256: 05ae7a77008ce0ad3be214d128d8bdb23b88387408e7bdf318a0f01c54841806  # [win]
 
 build:
-  number: 0
+  number: 1
   binary_relocation: false
   skip: true  # [osx or ppc64le]
 
@@ -102,10 +102,22 @@ outputs:
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("libcublas", exact=True) }}
+        - cuda-cudart-dev_{{ target_platform }}
+        - cuda-crt-dev_{{ target_platform }}
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
         - libcublas-static >={{ version }}      # [linux]
     test:
+      requires:
+        - {{ compiler("c") }}
+        - gxx                         # [linux]
+        - gcc                         # [linux]
+        - sysroot_linux-aarch64 2.28  # [aarch64] # needed to compile test.c for aarch64 as some symbols are introduced in glibc 2.27
+        - vs2019_win-64               # [win]
+      files:
+        - compile_sample_code.bat  # [win]
+        - compile_sample_code.sh   # [linux]
+        - test.c
       commands:
         - test -L $PREFIX/lib/libcublas.so                                    # [linux]
         - test -L $PREFIX/lib/libcublasLt.so                                  # [linux]
@@ -119,14 +131,22 @@ outputs:
         - test -L $PREFIX/targets/{{ target_name }}/lib/libnvblas.so          # [linux]
         - test -f $PREFIX/targets/{{ target_name }}/lib/stubs/libcublas.so    # [linux]
         - test -f $PREFIX/targets/{{ target_name }}/lib/stubs/libcublasLt.so  # [linux]
+        - test -f $PREFIX/targets/{{ target_name }}/include/cuda_runtime.h    # [linux] # cuda-cudart-dev
+        - test -f $PREFIX/targets/{{ target_name }}/include/host_defines.h    # [linux] # cuda-crt-dev
+        - test -f $PREFIX/targets/{{ target_name }}/include/nv/target         # [linux] # cuda-cccl
         - test -f $PREFIX/targets/{{ target_name }}/libcublas/src/fortran.c   # [linux and not aarch64]
         - test -f $PREFIX/targets/{{ target_name }}/libcublas/src/fortran.h   # [linux and not aarch64]
+        - ./compile_sample_code.sh                                            # [linux]
         - if not exist %LIBRARY_INC%\cublas.h exit 1                          # [win]
         - if not exist %LIBRARY_INC%\cublasLt.h exit 1                        # [win]
         - if not exist %LIBRARY_INC%\nvblas.h exit 1                          # [win]
+        - if not exist %LIBRARY_INC%\cuda_runtime.h exit 1                    # [win] # cuda-cudart-dev
+        - if not exist %LIBRARY_INC%\host_defines.h exit 1                    # [win] # cuda-crt-dev
+        - if not exist %LIBRARY_INC%\targets\x64\nv\target exit 1             # [win] # cuda-cccl
         - if not exist %LIBRARY_LIB%\cublas.lib exit 1                        # [win]
         - if not exist %LIBRARY_LIB%\cublasLt.lib exit 1                      # [win]
         - if not exist %LIBRARY_LIB%\nvblas.lib exit 1                        # [win]
+        - .\compile_sample_code.bat                                           # [win]
     about:
       home: https://developer.nvidia.com/cublas
       license: LicenseRef-NVIDIA-End-User-License-Agreement
