@@ -57,13 +57,13 @@ outputs:
         - {{ stdlib("c") }}
         - patchelf <0.18.0                      # [linux]
       host:
-         - cuda-version {{ cuda_version }}
+        - cuda-version {{ cuda_version }}
       run:
-         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
+        - {{ pin_compatible("cuda-version", max_pin="x.x") }}
          # In 12.0/12.1 libcublas runtime will try to dlopen nvrtc due to a bug
          # so it must be listed as a runtime dependency.
          # See https://github.com/conda-forge/libcublas-feedstock/issues/9
-         - cuda-nvrtc
+        - cuda-nvrtc
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     # Tests are defined at the top level, due to package/output name conflicts.
@@ -159,7 +159,7 @@ outputs:
 
   - name: libcublas-static
     build:
-      skip: True  # [not linux]
+      skip: true  # [not linux]
     files:
       - targets/{{ target_name }}/lib/lib*blas*_static.a
     requirements:
