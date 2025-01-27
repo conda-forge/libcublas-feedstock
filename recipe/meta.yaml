@@ -112,7 +112,6 @@ outputs:
         - {{ compiler("c") }}
         - gxx                         # [linux]
         - gcc                         # [linux]
-        - sysroot_linux-aarch64 2.28  # [aarch64] # needed to compile test.c for aarch64 as some symbols are introduced in glibc 2.27
         - vs2019_win-64               # [win]
       files:
         - compile_sample_code.bat  # [win]
