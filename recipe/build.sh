@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run GLIBC check
+check-glibc bin/* lib/*.so.* lib64/*.so.*
+
 # Install to conda style directories
 [[ -d lib64 ]] && mv lib64 lib
 mkdir -p ${PREFIX}/lib

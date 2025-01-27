@@ -56,6 +56,7 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
         - {{ stdlib("c") }}
         - patchelf <0.18.0                      # [linux]
+        - cf-nvidia-tools                       # [linux]
       host:
          - cuda-version {{ cuda_version }}
       run:
