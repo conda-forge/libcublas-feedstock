@@ -210,6 +210,6 @@ about:
   doc_url: https://docs.nvidia.com/cuda/cublas/
 
 extra:
-  feedstock-name: libcublas
+  feedstock-name: {{ component_name }}
   recipe-maintainers:
     - conda-forge/cuda
