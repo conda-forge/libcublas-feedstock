@@ -118,6 +118,7 @@ outputs:
     test:
       requires:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - gxx                         # [linux]
         - gcc                         # [linux]
         - vs2019_win-64               # [win]
