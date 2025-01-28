@@ -13,7 +13,7 @@
 {% set extension = "zip" %}  # [win]
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}-split
   version: {{ version }}
 
 source:
@@ -23,27 +23,22 @@ source:
   sha256: a2f990cf61f0086d942632f2455727240baa9378c2e9fa2bdda56ef81f6cf8ad  # [win]
 
 build:
-  number: 0
-  binary_relocation: false
+  number: 1
   skip: true  # [osx or ppc64le]
+  script_env:
+    - component_name={{ name }}
 
-test:
-  requires:
-    - patchelf  # [linux]
-  files:
-    - test-rpath.sh
-  commands:
-    - test -L $PREFIX/lib/libcublas.so.{{ version }}                                          # [linux]
-    - test -L $PREFIX/lib/libcublas.so.{{ version.split(".")[0] }}                            # [linux]
-    - test -L $PREFIX/targets/{{ target_name }}/lib/libcublas.so.{{ version.split(".")[0] }}  # [linux]
-    - test -f $PREFIX/targets/{{ target_name }}/lib/libcublas.so.{{ version }}                # [linux]
-    - bash test-rpath.sh                                                                      # [linux]
-    - if not exist %LIBRARY_BIN%\cublas64_{{ version.split(".")[0] }}.dll exit 1              # [win]
-    - if not exist %LIBRARY_BIN%\cublasLt64_{{ version.split(".")[0] }}.dll exit 1            # [win]
-    - if not exist %LIBRARY_BIN%\nvblas64_{{ version.split(".")[0] }}.dll exit 1              # [win]
+requirements:
+  build:
+    - arm-variant * {{ arm_variant_type }}  # [aarch64]
+    - {{ stdlib("c") }}
+    - patchelf <0.18.0                      # [linux]
+    - cf-nvidia-tools                       # [linux]
 
 outputs:
   - name: libcublas
+    build:
+      binary_relocation: false
     files:
       - lib/lib*blas*.so.*                            # [linux]
       - targets/{{ target_name }}/lib/lib*blas*.so.*  # [linux]
@@ -55,7 +50,6 @@ outputs:
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
         - {{ stdlib("c") }}
-        - patchelf <0.18.0                      # [linux]
       host:
          - cuda-version {{ cuda_version }}
       run:
@@ -66,7 +60,20 @@ outputs:
          - cuda-nvrtc
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-    # Tests are defined at the top level, due to package/output name conflicts.
+    test:
+      requires:
+        - patchelf  # [linux]
+      files:
+        - test-rpath.sh
+      commands:
+        - test -L $PREFIX/lib/libcublas.so.{{ version }}                                          # [linux]
+        - test -L $PREFIX/lib/libcublas.so.{{ version.split(".")[0] }}                            # [linux]
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcublas.so.{{ version.split(".")[0] }}  # [linux]
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcublas.so.{{ version }}                # [linux]
+        - bash test-rpath.sh                                                                      # [linux]
+        - if not exist %LIBRARY_BIN%\cublas64_{{ version.split(".")[0] }}.dll exit 1              # [win]
+        - if not exist %LIBRARY_BIN%\cublasLt64_{{ version.split(".")[0] }}.dll exit 1            # [win]
+        - if not exist %LIBRARY_BIN%\nvblas64_{{ version.split(".")[0] }}.dll exit 1              # [win]
     about:
       home: https://developer.nvidia.com/cublas
       license: LicenseRef-NVIDIA-End-User-License-Agreement
@@ -79,6 +86,7 @@ outputs:
 
   - name: libcublas-dev
     build:
+      binary_relocation: false
       run_exports:
         - {{ pin_subpackage("libcublas", max_pin="x") }}
     files:
@@ -101,7 +109,7 @@ outputs:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-        - {{ pin_subpackage("libcublas", exact=True) }}
+        - {{ pin_subpackage("libcublas", exact=true) }}
         - cuda-cudart-dev_{{ target_platform }}
         - cuda-crt-dev_{{ target_platform }}
       run_constrained:
@@ -110,9 +118,9 @@ outputs:
     test:
       requires:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - gxx                         # [linux]
         - gcc                         # [linux]
-        - sysroot_linux-aarch64 2.28  # [aarch64] # needed to compile test.c for aarch64 as some symbols are introduced in glibc 2.27
         - vs2019_win-64               # [win]
       files:
         - compile_sample_code.bat  # [win]
@@ -159,7 +167,8 @@ outputs:
 
   - name: libcublas-static
     build:
-      skip: True  # [not linux]
+      skip: true                # [not linux]
+      binary_relocation: false
     files:
       - targets/{{ target_name }}/lib/lib*blas*_static.a
     requirements:
@@ -203,5 +212,6 @@ about:
   doc_url: https://docs.nvidia.com/cuda/cublas/
 
 extra:
+  feedstock-name: {{ name }}
   recipe-maintainers:
     - conda-forge/cuda
