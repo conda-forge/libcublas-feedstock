@@ -30,8 +30,6 @@ build:
 
 requirements:
   build:
-    - {{ compiler("c") }}
-    - {{ compiler("cxx") }}
     - arm-variant * {{ arm_variant_type }}  # [aarch64]
     - {{ stdlib("c") }}
     - patchelf <0.18.0                      # [linux]
