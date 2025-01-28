@@ -6,8 +6,6 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-component_name:
-- libcublas
 cxx_compiler:
 - vs2019
 target_platform:
