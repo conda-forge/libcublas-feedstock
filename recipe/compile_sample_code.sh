@@ -8,4 +8,4 @@ set -x
 
 echo Compiler: $GCC
 
-$GCC -I$PREFIX/${targetsDir}/include -L$PREFIX/${targetsDir}/lib -lcublas ${RECIPE_ROOT}/test.c
+$GCC -I$PREFIX/${targetsDir}/include -L$PREFIX/${targetsDir}/lib -lcublas test.c

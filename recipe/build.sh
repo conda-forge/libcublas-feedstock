@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run GLIBC check
+check-glibc bin/* lib/*.so.* lib64/*.so.*
+
 # Install to conda style directories
 [[ -d lib64 ]] && mv lib64 lib
 mkdir -p ${PREFIX}/lib
@@ -31,7 +34,7 @@ for i in `ls`; do
         fi
     else
         # Put all other files in targetsDir
-        mkdir -p ${PREFIX}/${targetsDir}/${PKG_NAME}
-        cp -rv $i ${PREFIX}/${targetsDir}/${PKG_NAME}
+        mkdir -p ${PREFIX}/${targetsDir}/${component_name}
+        cp -rv $i ${PREFIX}/${targetsDir}/${component_name}
     fi
 done
