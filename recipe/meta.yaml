@@ -167,7 +167,8 @@ outputs:
 
   - name: libcublas-static
     build:
-      skip: true  # [not linux]
+      skip: true                # [not linux]
+      binary_relocation: false
     files:
       - targets/{{ target_name }}/lib/lib*blas*_static.a
     requirements:
