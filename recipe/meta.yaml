@@ -122,6 +122,7 @@ outputs:
         - gxx                         # [linux]
         - gcc                         # [linux]
         - vs2019_win-64               # [win]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
       files:
         - compile_sample_code.bat  # [win]
         - compile_sample_code.sh   # [linux]
