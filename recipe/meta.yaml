@@ -1,5 +1,5 @@
 {% set name = "libcublas" %}
-{% set version = "12.8.3.14" %}
+{% set version = "12.8.4.1" %}
 {% set cuda_version = "12.8" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
@@ -18,9 +18,9 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: d634d545a670a43337741e1672b63ef9b989aaba15823f27ee4b4c7f43d790bb  # [linux64]
-  sha256: 62200eba7c5cb946863a0699a264be77437a5f7538a66167752c29a7ccae2849  # [aarch64]
-  sha256: a2f990cf61f0086d942632f2455727240baa9378c2e9fa2bdda56ef81f6cf8ad  # [win]
+  sha256: 21718957c2cf000bacd69d36c95708a2319199e39e056f8b4f0f68e3b9f323bb  # [linux64]
+  sha256: 429803c0ea8aec1db0050f7bfd807d519e22c9bf223c19000d6018d930741028  # [aarch64]
+  sha256: 57a470112cec7e112c95253dde8b3c7184d795dbd92b0bde77a4cb7f8c94c8aa  # [win]
 
 build:
   number: 0
@@ -122,6 +122,7 @@ outputs:
         - gxx                         # [linux]
         - gcc                         # [linux]
         - vs2019_win-64               # [win]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
       files:
         - compile_sample_code.bat  # [win]
         - compile_sample_code.sh   # [linux]
