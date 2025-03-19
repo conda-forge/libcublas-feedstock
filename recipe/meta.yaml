@@ -33,7 +33,7 @@ requirements:
     - arm-variant * {{ arm_variant_type }}  # [aarch64]
     - {{ stdlib("c") }}
     - patchelf <0.18.0                      # [linux]
-    - cf-nvidia-tools                       # [linux]
+    - cf-nvidia-tools 1.*                   # [linux]
 
 outputs:
   - name: libcublas
