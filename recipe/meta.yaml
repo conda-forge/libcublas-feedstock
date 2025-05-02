@@ -1,6 +1,6 @@
 {% set name = "libcublas" %}
-{% set version = "12.8.4.1" %}
-{% set cuda_version = "12.8" %}
+{% set version = "12.9.0.13" %}
+{% set cuda_version = "12.9" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -18,12 +18,12 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 21718957c2cf000bacd69d36c95708a2319199e39e056f8b4f0f68e3b9f323bb  # [linux64]
-  sha256: 429803c0ea8aec1db0050f7bfd807d519e22c9bf223c19000d6018d930741028  # [aarch64]
-  sha256: 57a470112cec7e112c95253dde8b3c7184d795dbd92b0bde77a4cb7f8c94c8aa  # [win]
+  sha256: bc51ee77e5891614e070066c0dabc52b609302bac2127aff850020b14f35716b  # [linux64]
+  sha256: 2aee652a88e9a22f62d8fc7cae72cae0c4697c4cc5a3f09bd263d3364bbdf2a7  # [aarch64]
+  sha256: 20d9c2cd3810c948b875820917b38053dacf200b23cb3b8b8a14ff3569aa1f31  # [win]
 
 build:
-  number: 1
+  number: 0
   skip: true  # [osx or ppc64le]
   script_env:
     - component_name={{ name }}
