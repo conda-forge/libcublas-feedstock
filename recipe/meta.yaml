@@ -143,6 +143,8 @@ outputs:
         - test -f $PREFIX/targets/{{ target_name }}/include/nv/target         # [linux] # cuda-cccl
         - test -f $PREFIX/targets/{{ target_name }}/libcublas/src/fortran.c   # [linux and not aarch64]
         - test -f $PREFIX/targets/{{ target_name }}/libcublas/src/fortran.h   # [linux and not aarch64]
+        - test ! -f $PREFIX/targets/{{ target_name }}/lib/libcublas_static.a    # [linux]
+        - test ! -f $PREFIX/targets/{{ target_name }}/lib/libcublasLt_static.a  # [linux]
         - ./compile_sample_code.sh                                            # [linux]
         - if not exist %LIBRARY_INC%\cublas.h exit 1                          # [win]
         - if not exist %LIBRARY_INC%\cublasLt.h exit 1                        # [win]
@@ -178,8 +180,13 @@ outputs:
         - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
+        - cuda-culibos-static
+        - cuda-cudart-static
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
+        - {{ pin_subpackage("libcublas-dev", max_pin="x") }}
+        - {{ pin_compatible("cuda-culibos-static", max_pin="x.x") }}
+        - {{ pin_compatible("cuda-cudart-static", max_pin="x.x") }}
         # In 12.0/12.1 libcublas runtime will try to dlopen nvrtc due to a bug
         # so it must be listed as a runtime dependency.
         # See https://github.com/conda-forge/libcublas-feedstock/issues/9
@@ -187,9 +194,18 @@ outputs:
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
+      requires:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ stdlib("c") }}
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+      files:
+        - compile_sample_code_static.sh   # [linux]
+        - test.c
       commands:
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcublas_static.a
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcublasLt_static.a
+        - ./compile_sample_code_static.sh
     about:
       home: https://developer.nvidia.com/cublas
       license: LicenseRef-NVIDIA-End-User-License-Agreement
