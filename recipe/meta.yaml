@@ -61,7 +61,6 @@ outputs:
          # so it must be listed as a runtime dependency.
          # See https://github.com/conda-forge/libcublas-feedstock/issues/9
         - cuda-nvrtc
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       requires:
@@ -115,8 +114,8 @@ outputs:
         - {{ pin_subpackage("libcublas", exact=true) }}
         - cuda-cudart-dev_{{ target_platform }}
         - cuda-crt-dev_{{ target_platform }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
+      run_constrained:
         - libcublas-static >={{ version }}      # [linux]
     test:
       requires:
@@ -124,7 +123,6 @@ outputs:
         - {{ stdlib("c") }}
         - gxx                         # [linux]
         - gcc                         # [linux]
-        - vs2019_win-64               # [win]
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
       files:
         - compile_sample_code.bat  # [win]
@@ -189,7 +187,6 @@ outputs:
         # so it must be listed as a runtime dependency.
         # See https://github.com/conda-forge/libcublas-feedstock/issues/9
         - cuda-nvrtc
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
