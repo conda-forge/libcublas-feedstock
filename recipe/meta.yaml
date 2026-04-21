@@ -19,7 +19,7 @@ package:
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
   sha256: f732baf6e55de1844f9bea6646ceae13f30b10592f87b12406bf4713b7f67521  # [linux64]
-  sha256: f732baf6e55de1844f9bea6646ceae13f30b10592f87b12406bf4713b7f67521  # [aarch64]
+  sha256: 17f56c9b89e9cc71e0738a874d9a0c98cfe224119b475b16c6ccd07fc3ded74b  # [aarch64]
   sha256: 0a2beedd7c1203cb9de5e5ab11943d27e41ee5d18dc3810b21bcd75be7e57a05  # [win]
 
 build:
