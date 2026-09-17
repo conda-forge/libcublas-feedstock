@@ -1,5 +1,5 @@
 {% set name = "libcublas" %}
-{% set version = "13.7.0.27" %}
+{% set version = "13.8.0.4" %}
 {% set cuda_version = "13.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
@@ -13,10 +13,10 @@
 {% set target_name = "arm64" %}  # [win and arm64]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
-{% set sha256 = "cc38b57206f5fbfe1f7f510bffde3059c525c0119ff3af8e40a6f90f147c01c3" %}  # [linux64]
-{% set sha256 = "30cc7ed94280b0a3e1e4baf0a3ceb9115fd694b39ccdd73dd1a9f0f82aebf4bc" %}  # [aarch64]
-{% set sha256 = "fff93984ee8a85dd8568e4b9000f9e3ef7153f0f73b176756bcbad3c6622d1f0" %}  # [win64]
-{% set sha256 = "932794dcd1e67e152ab2aeaf32ee8141ded807c6ea6d8f85692c40b02fdd09d7" %}  # [win and arm64]
+{% set sha256 = "bd6ffcce561672da6abb928214a6694f392741e7d1e2d7dfde0da4bd651706b6" %}  # [linux64]
+{% set sha256 = "34678808ea03c6fa57e62a3c8081dfa2e673da4c3838d1a6bef680a4ce22c88c" %}  # [aarch64]
+{% set sha256 = "0974318e9861a61cb9091cf7de8d4c2880e9787fe311cb4bcbd08865663c5f43" %}  # [win64]
+{% set sha256 = "ec79698528f64361a370d1b0254a927e369b57525831fadcb2cdb7732d8ab621" %}  # [win and arm64]
 
 package:
   name: {{ name }}-split
